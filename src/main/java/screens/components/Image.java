@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Image extends JPanel {
 
@@ -26,6 +29,10 @@ public class Image extends JPanel {
     private double relativeX = 0.5;
     private double relativeY = 0.5;
     private Dimension parentSize = null;
+
+    private final ScheduledExecutorService showFadeTimer = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService hideFadeTimer = Executors.newSingleThreadScheduledExecutor();
+
 
     public Image(String name) {
         this.name = name;
@@ -105,40 +112,43 @@ public class Image extends JPanel {
         int ms = 10;
         int steps = Math.max(1, milliseconds / ms);
         float increment = 1f / steps;
-        Timer timer = new Timer(ms, null);
-        timer.addActionListener(new ActionListener() {
+
+        Runnable task = new Runnable() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void run() {
                 opacity += increment;
                 repaint();
                 if (opacity >= 1f) {
                     opacity = 1f;
-                    ((Timer) e.getSource()).stop();
+                    showFadeTimer.shutdown();
                 }
             }
-        });
-        timer.start();
+        };
+        showFadeTimer.scheduleAtFixedRate(task, 0, ms, TimeUnit.MILLISECONDS);
+
     }
 
     public void fadeHide(int milliseconds) {
         opacity = 1f;
+        visible = true;
         int ms = 10;
         int steps = Math.max(1, milliseconds / ms);
         float increment = 1f / steps;
-        Timer timer = new Timer(ms, null);
-        timer.addActionListener(new ActionListener() {
+
+        Runnable task = new Runnable() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void run() {
                 opacity -= increment;
                 repaint();
                 if (opacity <= 0f) {
                     opacity = 0f;
                     visible = false;
-                    ((Timer) e.getSource()).stop();
+                    hideFadeTimer.shutdown();
                 }
             }
-        });
-        timer.start();
+        };
+        hideFadeTimer.scheduleAtFixedRate(task, 0, ms, TimeUnit.MILLISECONDS);
+
     }
 
     @Override

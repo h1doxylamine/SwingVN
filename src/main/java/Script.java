@@ -1,5 +1,6 @@
 import managers.ScriptManager;
 import screens.components.Image;
+import screens.components.SoundManager;
 
 import java.awt.*;
 
@@ -16,6 +17,8 @@ public class Script extends ScriptManager {
 
         Image arriereplan = background("bg");
         arriereplan.setScale(1.9f);
+
+        playSound("liebestraum");
 
         Image arriereplan2 = background("bg2");
         arriereplan2.setScale(1.9f);
@@ -154,6 +157,8 @@ public class Script extends ScriptManager {
         speak(Rika, "Quoi qu’il arrive maintenant...");
         speak(Rika, "Je ne reculerai plus.");
 
+        instantPass();
+        fadeHide(rika, 400);
         speak(null, "Fin.");
     }
 }

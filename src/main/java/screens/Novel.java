@@ -4,12 +4,12 @@ import java.util.List;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import core.Engine;
 import managers.ChoiceOption;
 import managers.ScriptManager;
 import managers.ScriptManager.Chara;
-import screens.components.ButtonsMenu;
 import screens.components.Choice;
 import screens.components.LogsMenu;
 import screens.components.TextBox;
@@ -18,7 +18,6 @@ import screens.components.TextBox;
 public class Novel extends JPanel {
 
     TextBox textBox;
-    ButtonsMenu buttonsMenu;
     Choice choice;
     ScriptManager scriptManager;
     public LogsMenu logs;
@@ -41,13 +40,11 @@ public class Novel extends JPanel {
                 }
             }
         };
-
         darkbg.setOpaque(false);
 
         textBox = new TextBox(1000, 100, 70, Engine.getInstance().topTextBox, Engine.getInstance().textColor);
-        buttonsMenu = new ButtonsMenu(0, 0, 100);
 
-        add(buttonsMenu);
+
         add(textBox);
         add(darkbg);
         setBackground(Color.BLACK);
@@ -83,7 +80,6 @@ public class Novel extends JPanel {
 
 
                 //temporaire car pas fiable
-                buttonsMenu.setBounds(width - buttonsMenu.getWidth() - 15, height - buttonsMenu.getHeight() -40, buttonsMenu.getWidth(), buttonsMenu.getHeight());
                 choice.setBounds(width / 4, height / 4, 650, 700);
             }
         });
@@ -176,7 +172,6 @@ public class Novel extends JPanel {
             setComponentZOrder(logs, 0);
         }
 
-        buttonsMenu.setVisible(!buttonsMenu.isVisible());
         textBox.setVisible(false);
 
         revalidate();

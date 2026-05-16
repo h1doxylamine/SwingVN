@@ -1,21 +1,14 @@
 package managers;
 
-import screens.Novel;
 import screens.components.Image;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import core.Engine;
-
-import javax.swing.*;
-import javax.swing.text.Position;
 
 public abstract class ScriptManager {
 
