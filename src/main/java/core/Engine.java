@@ -1,6 +1,7 @@
 package core;
 
 import managers.ChoiceOption;
+import managers.LogData;
 import managers.ResourceRegister;
 import managers.ScriptManager;
 import managers.ScriptManager.Chara;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,14 +46,10 @@ public class Engine {
     public Color textColor = Color.WHITE;    // pour une couleur 100% personalisée en rgb :  public Color textColor = new Color(x, x, x)
     public boolean isBold = true; //mettre les textes de la texbox en gras ou non
 
-
-
-
-
     public static final Engine INSTANCE = new Engine();
 
     private final Map<String, Color> characters = new HashMap<>();
-    public Map<Chara, String> logs = new HashMap<>();
+    public ArrayList<LogData> logs = new ArrayList<>();
     public ScriptManager currentScript;
     public boolean isAutoOn = false;
     public boolean isSkipOn = false;
@@ -78,7 +76,7 @@ public class Engine {
 
     public void displayDialogue(Chara character, String text) {
         novel.speak(text, character);
-        logs.put(character, text);
+        logs.add(new LogData(character, text));
     }
 
     public void displayChoices(List<ChoiceOption> options, String question, java.util.function.Consumer<Integer> onChoiceSelected) {
@@ -115,6 +113,7 @@ public class Engine {
     public void logs() {
         novel.changeLogsState();
         canInteract = !canInteract;
+
     }
 
 

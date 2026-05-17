@@ -1,12 +1,12 @@
 package screens.components;
 
 import core.Engine;
+import managers.LogData;
 import managers.ScriptManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LogsMenu extends JPanel {
@@ -24,15 +24,19 @@ public class LogsMenu extends JPanel {
         setVisible(false);
     }
 
-    public void render(Map<ScriptManager.Chara, String> logs) {
+    public void render(ArrayList<LogData> data) {
         removeAll();
 
         if (isVisible()) {
             int yPosition = 10;
 
-            for (Map.Entry<ScriptManager.Chara, String> entry : logs.entrySet()) {
-                ScriptManager.Chara chara = entry.getKey();
-                String text = entry.getValue();
+            JPanel logsPanel = new JPanel();
+            logsPanel.setLayout(null);
+            logsPanel.setOpaque(false);
+
+            for (LogData log : data) {
+                ScriptManager.Chara chara = log.chr();
+                String text = log.text();
 
                 if (text == null) {
                     continue;
@@ -48,23 +52,43 @@ public class LogsMenu extends JPanel {
 
                 Text name = new Text(charName, 20, charColor);
                 name.setBounds(10, yPosition, getWidth() - 20, 30);
-                add(name);
+                logsPanel.add(name);
 
                 yPosition += 35;
 
                 Text dialog = new Text(text, 16, Color.BLACK);
                 dialog.setBounds(20, yPosition, getWidth() - 30, 50);
-                add(dialog);
+                logsPanel.add(dialog);
 
                 yPosition += 60;
             }
 
+            logsPanel.setPreferredSize(new Dimension(getWidth() - 20, yPosition));
+
+            JScrollPane scroll = new JScrollPane(logsPanel);
+            scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+            scroll.setBounds(0, 0, getWidth(), getHeight() - 80);
+
+            scroll.setOpaque(false);
+
+
             JButton button = new JButton("Back");
-            button.setBounds(10, getHeight() - 50 - yPosition, getWidth() - 30, 50);
+            button.setBounds(10, getHeight() - 60, getWidth() - 30, 50);
             button.addActionListener(e -> {
                 Engine.getInstance().logs();
+                Engine.getInstance().novel.changeTextboxState();
             });
+
+
+            add(scroll);
             add(button);
+
+            SwingUtilities.invokeLater(() -> {
+                JScrollBar bar = scroll.getVerticalScrollBar();
+                bar.setValue(bar.getMaximum());
+            });
         }
 
         revalidate();
