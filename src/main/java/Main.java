@@ -2,6 +2,7 @@ import screens.MainMenu;
 import screens.Novel;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import core.Engine;
 
@@ -39,34 +40,54 @@ public class Main {
         containerPanel.setBackground(Color.BLACK);
 
 
-        ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
+        ArrayList<JButton> menuItems = new ArrayList<>();
 
 
         JMenuBar menuBar = new JMenuBar();
-        JMenuItem auto = new JMenuItem("Auto");
-        JMenuItem skip = new JMenuItem("Skip");
-        JMenuItem logs = new JMenuItem("Logs");
-        JMenuItem saves = new JMenuItem("Save");
+        JButton auto = new JButton("Auto");
+        JButton skip = new JButton("Skip");
+        JButton logs = new JButton("Logs");
+        JButton saves = new JButton("Save");
 
         menuItems.add(auto);
         menuItems.add(skip);
         menuItems.add(logs);
         menuItems.add(saves);
 
-        for (JMenuItem menu : menuItems) {
+        for (JButton menu : menuItems) {
+            menu.setBackground(Color.white);
+            menu.setBorder(new LineBorder(Color.white, 5));
             menuBar.add(menu);
-            menu.setMargin(new java.awt.Insets(0, 2, 0, 2));
         }
 
         menuBar.add(Box.createHorizontalGlue());
+        menuBar.setBackground(Color.WHITE);
 
         auto.addActionListener(e  ->  {
             Engine.getInstance().isAutoOn = !Engine.getInstance().isAutoOn;
+
+            if (Engine.getInstance().isAutoOn) {
+                auto.setBackground(Color.lightGray);
+                auto.setBorder(new LineBorder(Color.lightGray, 5));
+            } else {
+                auto.setBackground(Color.white);
+                auto.setBorder(new LineBorder(Color.white, 5));
+            }
+
             System.out.println("Auto mode :" + Engine.getInstance().isAutoOn);
         });
 
         skip.addActionListener(e -> {
             Engine.getInstance().isSkipOn = !Engine.getInstance().isSkipOn;
+
+            if (Engine.getInstance().isSkipOn) {
+                skip.setBackground(Color.lightGray);
+                skip.setBorder(new LineBorder(Color.lightGray, 5));
+            } else {
+                skip.setBackground(Color.white);
+                skip.setBorder(new LineBorder(Color.white, 5));
+            }
+
             System.out.println("Skip mode :" + Engine.getInstance().isAutoOn);
         });
 
